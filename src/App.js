@@ -1,11 +1,12 @@
 import { useState } from "react";
 import Cart from "./components/Cart/Cart";
+import HttpRequest from "./components/ConnectingDatabase/HttpRequest";
 import Header from "./components/Layout/Header";
+import AvailableMeals from "./components/Meals/AvailableMeals";
 import Meals from "./components/Meals/Meals";
 import CartProvider from "./store/CartProvider";
 
-function App() {
-
+function App(props) {
 
 const [cartIsShow, setCartIsShow] = useState(false);
 
@@ -25,6 +26,7 @@ const hideCartHandler = () => {
       <Meals></Meals>
       </main>
     </CartProvider>
+    
   );
 }
 
