@@ -32,15 +32,22 @@ const DUMMY_MEALS = [
 
 
 
-function AvailableMeals(props) {
-  const meals = props.meals
+function AvailableMeals() {
 
-    /*const [meals, setMeals] = useState([]);
+    const [meals, setMeals] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
   
     const fetchMealsHandler = async () => {
+      setIsLoading(true)
+      try{
       const response = await fetch(
-        "https://meals-afbb8-default-rtdb.firebaseio.com/meals.json"
+        "https://meals-afbb8-default-rtdb.firebaseio.com/meals.jso"
       );
+
+      if(!response.ok){
+        throw new Error('Something went wrong!');
+      }
       const data = await response.json();
   
       const loadedMeals = [];
@@ -54,17 +61,19 @@ function AvailableMeals(props) {
         });
       }
       setMeals(loadedMeals);
+      setIsLoading(false)
+    }
+    catch(error){
+      setError(error.message)
+    }
     }
 
 useEffect(() =>{
   fetchMealsHandler()
-}, [])*/
-
-useEffect(() =>{
-  props.fetchMealsHandler()
 }, [])
 
-  console.log(props.meals)
+
+  console.log(meals)
   const mealsList = meals.map((meal) => (
     <MealItem
       id={meal.id}
@@ -79,7 +88,8 @@ useEffect(() =>{
     <section className={classes.meals}>
       <Card>
         <ul>{mealsList}</ul>
-        
+        {isLoading && !error && <p className={classes.loading}>Loading...</p>}
+        {error && <p className={classes.error}>{error}</p>}
       </Card>
     </section>
   );

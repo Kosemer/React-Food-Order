@@ -1,9 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import AvailableMeals from "../Meals/AvailableMeals";
 import App from '../../App'
 import CartProvider from "../../store/CartProvider";
 
-function HttpRequest() {
+const HttpContext = React.createContext(function HttpRequest() {
     const [meals, setMeals] = useState([]);
   
     const fetchMealsHandler = async () => {
@@ -24,13 +24,8 @@ function HttpRequest() {
       }
       setMeals(loadedMeals);
   };
+})
 
-  return (
-    <AvailableMeals
-      fetchMealsHandler={fetchMealsHandler}
-      meals={meals}
-    ></AvailableMeals>
-  );
-}
 
-export default HttpRequest;
+
+export default HttpContext;
