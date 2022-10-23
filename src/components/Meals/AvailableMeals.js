@@ -42,7 +42,7 @@ function AvailableMeals() {
       setIsLoading(true)
       try{
       const response = await fetch(
-        "https://meals-afbb8-default-rtdb.firebaseio.com/meals.jso"
+        "https://meals-afbb8-default-rtdb.firebaseio.com/meals.json"
       );
 
       if(!response.ok){
