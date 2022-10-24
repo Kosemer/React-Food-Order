@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import classes from "../Cart/Checkout.module.css";
 
 const isEmpty = (value) => value.trim() === "";
-const isPostal = (value) => value.trim().length === 5;
+const isPostal = (value) => value.trim().length !== 5;
 
 function Checkout(props) {
   const [formIsValid, setFormIsValid] = useState({

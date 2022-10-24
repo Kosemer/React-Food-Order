@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     max-height: 20rem;
-    overflow: scroll;
+    overflow: auto;
   }
   
   .total {
@@ -14,7 +14,38 @@
     font-size: 1.5rem;
     margin: 1rem 0;
   }
+
+  .okImage{
+    height: 4rem;
+    
+  }
+
+  .sucessOK{
+    text-align: center;
+  }
+
+  .sucess{
+    color: #1cbe2c;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .error{
+    text-align: center;
+  }
+
+  .errorImage{
+    height: 4rem;
+  }
   
+  .errorMessage{
+    color: #c53232;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
   .actions {
     text-align: right;
   }

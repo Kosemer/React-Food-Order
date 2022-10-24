@@ -1,7 +1,5 @@
 import { useState } from "react";
 import Cart from "./components/Cart/Cart";
-import HttpContext from "./components/ConnectingDatabase/HttpRequest";
-import HttpRequest from "./components/ConnectingDatabase/HttpRequest";
 import Header from "./components/Layout/Header";
 import AvailableMeals from "./components/Meals/AvailableMeals";
 import Meals from "./components/Meals/Meals";

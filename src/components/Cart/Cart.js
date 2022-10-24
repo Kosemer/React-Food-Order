@@ -4,6 +4,8 @@ import Modal from "../UI/Modal";
 import classes from "./Cart.module.css";
 import CartItem from "./CartItem";
 import Checkout from "./Checkout";
+import Ok from "../../assets/Ok.png";
+import ErrorImage from "../../assets/ErrorImage.png";
 
 function Cart(props) {
   const [isCheckout, setIsCheckout] = useState(false);
@@ -11,6 +13,7 @@ function Cart(props) {
   const [hideCartItems, setHideCartItems] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [didSubmit, setDidSubmit] = useState(false);
+  const [error, setError] = useState(false);
 
   const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
   const hasItems = cartCtx.items.length > 0;
@@ -35,18 +38,27 @@ function Cart(props) {
 
   const submitOrderHandler = async (userData) => {
     setIsSubmitting(true);
-    const response = await fetch(
-      "https://meals-afbb8-default-rtdb.firebaseio.com/order.json",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          user: userData,
-          orderedItems: cartCtx.items
-        })
-      })
-    setIsSubmitting(false);
-    setDidSubmit(true);
-    cartCtx.clearCart();
+    try {
+      const response = await fetch(
+        "https://meals-afbb8-default-rtdb.firebaseio.com/order.json",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            user: userData,
+            orderedItems: cartCtx.items,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Something went wrong! Please Try again later!");
+      }
+      setIsSubmitting(false);
+      setDidSubmit(true);
+      cartCtx.clearCart();
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   const cartItems = (
@@ -69,8 +81,9 @@ function Cart(props) {
       {!hideCartItems && cartItems}
       <div className={classes.total}>
         <span>Total Amount</span>
-        <span>{totalAmount}</span>
+        <span>{totalAmount}</span>   
       </div>
+      {!hasItems &&<p>Your cart is empty!</p>}
       {hasItems && isCheckout && (
         <Checkout
           submitOrderHandler={submitOrderHandler}
@@ -93,11 +106,26 @@ function Cart(props) {
     </Fragment>
   );
 
-  const isSubmittingModalContent = <p>Sending order data...</p>;
+  const isSubmittingModalContent = <p>Sending order data...</p>;  // RENDELÉS KÜLDÉSE
 
-  const didSubmitModalContent = (
+  const errorPostRequest = (  // SIKERTELEN RENDELÉS
+    <div className={classes.error}>
+      <p className={classes.errorMessage}>{error}</p>
+      <img className={classes.errorImage} src={ErrorImage}></img>
+      <div className={classes.actions}>
+        <button className={classes["button--alt"]} onClick={props.onHideCart}>
+          Close
+        </button>
+      </div>
+    </div>
+  );
+
+  const didSubmitModalContent = ( // SIKERES RENDELÉS
     <Fragment>
-      <p>Sucesfully sent the order!</p>
+      <div className={classes.sucessOK}>
+        <p className={classes.sucess}>Sucessfully sent the order!</p>
+        <img src={Ok} className={classes.okImage}></img>
+      </div>
       <div className={classes.actions}>
         <button className={classes["button--alt"]} onClick={props.onHideCart}>
           Close
@@ -109,8 +137,9 @@ function Cart(props) {
   return (
     <Modal onHideCart={props.onHideCart}>
       {!isSubmitting && !didSubmit && cartModalContent}
-      {isSubmitting && isSubmittingModalContent}
+      {isSubmitting && isSubmittingModalContent && !error}
       {!isSubmitting && didSubmit && didSubmitModalContent}
+      {error && errorPostRequest}
     </Modal>
   );
 }
