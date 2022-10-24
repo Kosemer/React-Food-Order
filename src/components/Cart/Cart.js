@@ -41,12 +41,12 @@ function Cart(props) {
         method: "POST",
         body: JSON.stringify({
           user: userData,
-          orderedItems: cartCtx.items,
-        }),
-      }
-    );
+          orderedItems: cartCtx.items
+        })
+      })
     setIsSubmitting(false);
     setDidSubmit(true);
+    cartCtx.clearCart();
   };
 
   const cartItems = (
@@ -93,9 +93,26 @@ function Cart(props) {
     </Fragment>
   );
 
-  return <Modal onHideCart={props.onHideCart}>
-    {cartModalContent}
-  </Modal>;
+  const isSubmittingModalContent = <p>Sending order data...</p>;
+
+  const didSubmitModalContent = (
+    <Fragment>
+      <p>Sucesfully sent the order!</p>
+      <div className={classes.actions}>
+        <button className={classes["button--alt"]} onClick={props.onHideCart}>
+          Close
+        </button>
+      </div>
+    </Fragment>
+  );
+
+  return (
+    <Modal onHideCart={props.onHideCart}>
+      {!isSubmitting && !didSubmit && cartModalContent}
+      {isSubmitting && isSubmittingModalContent}
+      {!isSubmitting && didSubmit && didSubmitModalContent}
+    </Modal>
+  );
 }
 
 export default Cart;
