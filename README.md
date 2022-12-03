@@ -1,4 +1,6 @@
-<h1 align="center">React-Food-Order</h1>
+<h1 align="center">React Food Order</h1>
+<br>
+<br>
 
 # Description:
 
